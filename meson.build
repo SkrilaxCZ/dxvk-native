@@ -147,7 +147,12 @@ else
     wrc = find_program('rc')
   else
     dxvk_include_path = include_directories('./include', './include/native/', './include/native/windows', './include/native/directx')
-    lib_sdl2    = dependency('SDL2')
+    if dxvk_platform == 'darwin'
+      # must copy the framework to Xcode frameworks as well
+      lib_sdl2    = dependency('SDL2', method: 'extraframework')
+    else
+      lib_sdl2    = dependency('SDL2')
+    endif
     lib_vulkan  = dependency('vulkan')
     wrc = find_program('echo')
     so_prefix = 'libdxvk_'
